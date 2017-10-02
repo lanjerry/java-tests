@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离
+注意：使用mapper代理方法开发，namespace有特殊重要的作用
+ -->
+<mapper namespace="com.lanjerry.mybatis.mapper.UserMapper">
+
+	<!-- 定义sql片段
+	id:sql片段的唯一标识
+	经验：是基于单表来定义sql片段，这样的话这个sql片段可用性才高
+	在sql片段中不要包括where
+	 -->
+	 <sql id="query_user_where">
+		<if test="userCustom!=null">
+			<if test="userCustom.sex!=null and userCustom.sex!=''">
+				and user.sex=#{userCustom.sex}
+			</if>
+			<if test="userCustom.username!=null and userCustom.username!=''">
+				and user.username like '%${userCustom.username}%'
+			</if>
+			<if test="ids!=null">
+				<!--
+				使用foreach遍历传入ids
+				collection：指定输入对象中属性集合
+				item：每个遍历生成对象中
+				open：开始遍历时拼接串
+				close：结束遍历时拼接串
+				separator：遍历的两个对象中需要拼接的串
+				实现下边的sql拼接： and (id=1 or id=10 or id=16)
+				 -->
+<!-- 				<foreach collection="ids" item="user_id" open="and (" close=")" separator="or">
+					id=#{user_id}
+				</foreach> -->
+				
+				<!-- 实现下边的sql拼接： and id in (1,10,16) -->
+				<foreach collection="ids" item="user_id" open="and id in (" close=")" separator=",">
+					#{user_id}
+				</foreach>
+			</if>
+		</if>
+	 </sql>
+
+	<!-- 用户信息综合查询
+	#{userCustom.sex}：取出pojo包装对象中的性别值
+	${userCustom.username}：取出pojo包装对象中用户名称
+	 -->
+	<select id="findUserList" parameterType="UserQueryVo" resultType="UserCustom" >
+		select * from user  
+		<!-- where标签可以自动去掉条件中的第一个and -->
+		<where>
+			<!-- 如果sql片段的id,如果refid指定的id不在本mapper文件中，需要前边加namespace -->
+			<include refid="query_user_where"></include>
+		</where>
+	</select>
+	
+	<!-- 输出简单类型 -->
+	<select id="findUserCount" parameterType="UserQueryVo" resultType="int" >
+		select count(*) from user 
+		<!-- where标签可以自动去掉条件中的第一个and -->
+		<where>
+			<include refid="query_user_where"></include>
+		</where>
+	</select>
+	
+	<!-- 
+	定义resultMap 
+	将select id id_,username username_ from user和user类中的属性作一个映射关系
+	type：resultMap最终映射的java对象类型，可以使用别名
+	id：对resultMap的唯一标识
+	-->
+	<resultMap type="user" id="userResultMap">
+		<!-- id表示查询结果集中唯一标识 
+		column:查询出来的列名
+		property：type指定的pojo类型中的属性名
+		最终resultMap对column和property作一个映射关系（对应关系）
+		-->
+		<id column="id_" property="id"/>
+		<!-- 
+		result：对普通名映射定义
+		column：查询出来的列名
+		property：type指定的pojo类型中的属性名
+		最终resultMap对column和property作一个映射关系（对应关系）
+		 -->
+		<result column="username_" property="username"/>
+	</resultMap>
+	
+	<!-- 使用ResultMap输出映射 -->
+	<select id="findUserByIdResultMap" parameterType="int" resultMap="userResultMap">
+		select id id_,username username_ from user where id=#{id}
+	</select>
+
+	<!-- 
+	根据id查询用户表信息
+	parameterType：指定输入参数的类型，这里指定int型
+	resultType：指定sql输出结果的所映射的java对象类型，select指定resultType表示将单条记录映射成的java对象
+	#{}表示一个占位符
+	#{id}：其中id表示接收输入的参数，参数名称就是id，如果输入参数是简单类型，#{}中的参数名可以任意，可以value或其他名称
+	 -->
+	<select id="findUserById" parameterType="java.lang.Integer" resultType="User">
+		SELECT * FROM user WHERE id=#{id}
+	</select>
+	
+	<!-- 
+	根据用户名称模糊查询用户信息，可能返回多条
+	resultType：指定就是单条记录所映射的java对象类型
+	${}：表示拼接sql，将接收到参数的内容不加任何修饰拼接在sql中
+	使用${}拼接sql,引起sql注入
+	${value}：接收输入参数的内容，如果传入类型是简单类型，${}中只能用value
+	 -->
+	<select id="findUserByName" parameterType="java.lang.String" resultType="com.lanjerry.mybatis.po.User">
+		SELECT * FROM user WHERE username LIKE '%${value}%'
+	</select>
+	
+	<!-- 添加用户 -->
+	<insert id="insertUser" parameterType="com.lanjerry.mybatis.po.User">
+		<!--
+		将插入数据的主键返回，返回user对象中
+		SELECT LAST_INSERT_ID()：得到刚insert进去记录的主键值，只适用于自增主键
+		keyProperty：将查询到的主键值设置到 parameterType指定对象的哪个属性
+		order：SELECT LAST_INSERT_ID()执行顺序，相对于insert语句来说它的执行顺序
+		resultType：指定SELECT LAST_INSERT_ID()的结果类型
+		-->
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer" >
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into user(username,birthday,sex,address)value(#{username},#{birthday},#{sex},#{address})
+	</insert>
+	
+	<!-- 删除用户，根据id删除用户，需要输入id值 -->
+	<delete id="deleteUser" parameterType="java.lang.Integer">
+		delete from user where id=#{id}
+	</delete>
+	
+	<!-- 更新用户，根据id更新用户，需要传入用户的更新信息 -->
+	<update id="updateUser">
+		update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id=#{id}
+	</update>
+</mapper>

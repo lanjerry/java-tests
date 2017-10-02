@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/com/lanjerry/mybatis/first=UTF-8
 encoding//src/com/lanjerry/mybatis/po/User.java=UTF-8
+encoding//test/com/lanjerry/mybatis/mapper/UserMapperTest.java=UTF-8
 encoding/<project>=UTF-8
 encoding/src=UTF-8
