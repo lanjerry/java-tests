@@ -48,7 +48,7 @@ public class OrdersCustomMapperTest {
 	}
 
 	@Test
-	public void testFindOrdersUserResultMapr() throws Exception {
+	public void testFindOrdersUserResultMap() throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		
 		//创建UserMapper对象，mybatis自动生成mapper代理对象
@@ -86,6 +86,26 @@ public class OrdersCustomMapperTest {
 		
 		//调用userMapper的方法
 		List<User> list = ordersCustomMapper.findUserAndItemsResultMap();
+		
+		session.close();
+		
+		System.out.println(list);
+	}
+	
+	@Test
+	public void testFindOrderUserLazyloading() throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		
+		//创建UserMapper对象，mybatis自动生成mapper代理对象
+		OrdersCustomMapper ordersCustomMapper = session.getMapper(OrdersCustomMapper.class);
+		
+		//调用userMapper的方法
+		List<Orders> list = ordersCustomMapper.findOrderUserLazyloading();
+		
+		for (Orders orders : list) {
+			User user=orders.getUser();
+			System.out.println(user);
+		}
 		
 		session.close();
 		
