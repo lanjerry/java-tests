@@ -44,8 +44,8 @@ collection：
 	
 ### 2017-10-05总结
 #### 一级缓存和二级缓存
-一级缓存mybatis默认开启
-二级缓存的总结：1-4为开启步骤
+一级缓存mybatis默认开启</br>
+二级缓存的总结：1-4为开启步骤</br>
 1. SqlMapConfig.xml配置文件中开启二级缓存<setting name="cacheEnabled" value="true"/>
 2. 对应的mapper.xml文件开启二级缓存<cache />
 3. 对应的pojo类进行序列化，public class User implements Serializable，因为二级缓存数据存储介质多种多样，不一样在内存
