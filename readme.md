@@ -43,7 +43,7 @@ collection：
 	如果使用resultType无法将查询结果映射到list集合中。
 	
 ### 2017-10-05总结
-####一级缓存和二级缓存
+#### 一级缓存和二级缓存
 一级缓存mybatis默认开启
 二级缓存的总结：1-4为开启步骤
 1. SqlMapConfig.xml配置文件中开启二级缓存<setting name="cacheEnabled" value="true"/>
