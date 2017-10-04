@@ -7,6 +7,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  -->
 <mapper namespace="com.lanjerry.mybatis.mapper.UserMapper">
 
+	<!-- 开启mapper的namespace下的二级缓存 -->
+	<cache />
+
 	<!-- 定义sql片段
 	id:sql片段的唯一标识
 	经验：是基于单表来定义sql片段，这样的话这个sql片段可用性才高
@@ -134,7 +137,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 更新用户，根据id更新用户，需要传入用户的更新信息 -->
-	<update id="updateUser">
+	<update id="updateUser" parameterType="com.lanjerry.mybatis.po.User">
 		update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id=#{id}
 	</update>
 </mapper>
