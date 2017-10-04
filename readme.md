@@ -41,3 +41,15 @@ collection：
 场合：
 	为了方便查询遍历关联信息可以使用collection将关联信息映射到list集合中，比如：查询用户权限范围模块及模块下的菜单，可使用collection将模块映射到模块list中，将菜单列表映射到模块对象的菜单list属性中，这样的作的目的也是方便对查询结果集进行遍历查询。
 	如果使用resultType无法将查询结果映射到list集合中。
+	
+### 2017-10-05总结
+####一级缓存和二级缓存
+一级缓存mybatis默认开启
+二级缓存的总结：1-4为开启步骤
+1. SqlMapConfig.xml配置文件中开启二级缓存<setting name="cacheEnabled" value="true"/>
+2. 对应的mapper.xml文件开启二级缓存<cache />
+3. 对应的pojo类进行序列化，public class User implements Serializable，因为二级缓存数据存储介质多种多样，不一样在内存
+4. 需要SqlSession执行关闭操作,将SqlSession中的数据写到二级缓存区域
+5. SqlSession执行commit操作后，清空缓存
+6. 在statement中设置useCache=false，禁用当前二级缓存，默认是true开启
+7. 在statement中设置flushCache=false，禁用当前二级缓存刷新，默认是true开启，如果改为false则不会刷新，使用缓存时如果手动修改数据库的数据后，再次查询会出现脏读
