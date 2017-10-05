@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	#{}表示一个占位符
 	#{id}：其中id表示接收输入的参数，参数名称就是id，如果输入参数是简单类型，#{}中的参数名可以任意，可以value或其他名称
 	 -->
-	<select id="findUserById" parameterType="java.lang.Integer" resultType="User">
+	<select id="findUserById" parameterType="java.lang.Integer" resultType="com.lanjerry.ssm.po.User">
 		SELECT * FROM user WHERE id=#{id}
 	</select>
 	
