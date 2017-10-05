@@ -55,3 +55,5 @@ collection：
 7. 在statement中设置flushCache=false，禁用当前二级缓存刷新，默认是true开启，如果改为false则不会刷新，使用缓存时如果手动修改数据库的数据后，再次查询会出现脏读
 8. 应用场景：访问多的查询请求且用户对查询结果实时性要求不高
 9. 局限性：对细粒度的数据级别的缓存实现不好，因为mybatis的二级缓存区以mapper为单位划分，比如当一个商品信息变化会将所有商品信息的缓存数据清空，解决此类问题需要在业务层根据需求对数据有针对性缓存
+#### spring和mybatis整合，原始dao开发
+注意：让接口实现类继承SqlSessionDaoSupport，可以自动加载sqlSessionFactory,通过this.getSqlSession()得到sqlSession
