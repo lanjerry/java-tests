@@ -122,18 +122,18 @@ public class OrdersCustomMapperTest {
 		// 第一次发起请求,查询id为1的用户
 		User user1 = userMapper.findUserById(1);
 		System.out.println(user1);
-		
-		//更新user1对象
+
+		// 更新user1对象
 		userMapper.updateUser(user1);
-		
-		//执行commit操作清空缓存
+
+		// 执行commit操作清空缓存
 		session.commit();
 
 		// 第二次发起请求,查询id为1的用户
 		User user2 = userMapper.findUserById(1);
 		System.out.println(user2);
 	}
-	
+
 	@Test
 	public void testCache2() throws Exception {
 		SqlSession session1 = sqlSessionFactory.openSession();
@@ -146,18 +146,17 @@ public class OrdersCustomMapperTest {
 		// 第一次发起请求,查询id为1的用户
 		User user1 = userMapper1.findUserById(1);
 		System.out.println(user1);
-		
-		//这里执行关闭操作,将SqlSession的数据写到二级缓存中去
+
+		// 这里执行关闭操作,将SqlSession的数据写到二级缓存中去
 		session1.close();
-		
-		//使用SqlSession3执行commit()操作
-/*		UserMapper userMapper3 = session3.getMapper(UserMapper.class);
-		User user=userMapper3.findUserById(1);
-		user.setUsername("118");
-		userMapper3.updateUser(user);
-		session3.commit();
-		session3.close();*/
-		
+
+		// 使用SqlSession3执行commit()操作
+		/*
+		 * UserMapper userMapper3 = session3.getMapper(UserMapper.class); User
+		 * user=userMapper3.findUserById(1); user.setUsername("118");
+		 * userMapper3.updateUser(user); session3.commit(); session3.close();
+		 */
+
 		UserMapper userMapper2 = session2.getMapper(UserMapper.class);
 		// 第二次发起请求,查询id为1的用户
 		User user2 = userMapper2.findUserById(1);
