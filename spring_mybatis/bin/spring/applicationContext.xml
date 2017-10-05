@@ -49,6 +49,7 @@
 		<!-- mapper批量扫描，从mapper包中扫描出mapper接口，自动创建代理对象并且在spring容器中注册 -->
 		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 			<property name="basePackage" value="com.lanjerry.ssm.mapper"></property>
+			<!-- 用value不用ref的原因是：使用了ref后，上面<context:property-placeholder location="classpath:db.properties"/>就没效果了，因为是先扫描操作，才到加载操作 -->
 			<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 		</bean>
 </beans>
