@@ -47,9 +47,11 @@ collection：
 一级缓存mybatis默认开启</br>
 二级缓存的总结：1-4为开启步骤</br>
 1. SqlMapConfig.xml配置文件中开启二级缓存<setting name="cacheEnabled" value="true"/>
-2. 对应的mapper.xml文件开启二级缓存<cache />
+2. 对应的mapper.xml文件开启二级缓存<cache />，属性type表示指定cache接口的实现类的类型，mybatis默认使用PerpetualCache，要和ehcache整合，需要配置type为ehcache实现cache接口的类型
 3. 对应的pojo类进行序列化，public class User implements Serializable，因为二级缓存数据存储介质多种多样，不一样在内存
 4. 需要SqlSession执行关闭操作,将SqlSession中的数据写到二级缓存区域
 5. SqlSession执行commit操作后，清空缓存
 6. 在statement中设置useCache=false，禁用当前二级缓存，默认是true开启
 7. 在statement中设置flushCache=false，禁用当前二级缓存刷新，默认是true开启，如果改为false则不会刷新，使用缓存时如果手动修改数据库的数据后，再次查询会出现脏读
+7. 应用场景：访问多的查询请求且用户对查询结果实时性要求不高
+7. 局限性：对细粒度的数据级别的缓存实现不好，因为mybatis的二级缓存区以mapper为单位划分，比如当一个商品信息变化会将所有商品信息的缓存数据清空，解决此类问题需要在业务层根据需求对数据有针对性缓存

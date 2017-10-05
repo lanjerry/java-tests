@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.lanjerry.mybatis.mapper.UserMapper">
 
 	<!-- 开启mapper的namespace下的二级缓存 -->
-	<cache />
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
 
 	<!-- 定义sql片段
 	id:sql片段的唯一标识
