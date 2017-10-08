@@ -57,3 +57,9 @@ collection：
 9. 局限性：对细粒度的数据级别的缓存实现不好，因为mybatis的二级缓存区以mapper为单位划分，比如当一个商品信息变化会将所有商品信息的缓存数据清空，解决此类问题需要在业务层根据需求对数据有针对性缓存
 #### spring和mybatis整合，原始dao开发
 注意：让接口实现类继承SqlSessionDaoSupport，可以自动加载sqlSessionFactory,通过this.getSqlSession()得到sqlSession
+
+### 2017-10-09总结
+1. BeanNameUrlHandlerMapping处理器映射器为简单的映射器，将bean的name作为url进行查找
+2. SimpleUrlHandlerMapping处理器映射器是BeanNameUrlHandlerMapping映射器的加强版，它可以将url和处理器bean的id进行统一映射配置
+3. SimpleControllerHandlerAdapter处理器适配器，要求编写的Handler实现Controller接口
+4. HttpRequestHandlerAdapte处理器适配器，要求编写的 Handler实现HttpRequestHandler接口，可以使用里面的request参数，设置响应的数据格式，比如响应json格式，这是Controller做不到的
