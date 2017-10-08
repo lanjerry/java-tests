@@ -58,7 +58,7 @@ collection：
 #### spring和mybatis整合，原始dao开发
 注意：让接口实现类继承SqlSessionDaoSupport，可以自动加载sqlSessionFactory,通过this.getSqlSession()得到sqlSession
 
-### 2017-10-09总结
+### 2017-10-09总结（多个映射器和多个适配器可以共存）
 1. BeanNameUrlHandlerMapping是非注解处理器映射器，将bean的name作为url进行查找
 2. SimpleUrlHandlerMapping是非注解处理器映射器，是BeanNameUrlHandlerMapping映射器的加强版，它可以将url和处理器bean的id进行统一映射配置
 3. SimpleControllerHandlerAdapter是非注解处理器适配器，要求编写的Handler实现Controller接口
