@@ -58,8 +58,19 @@ collection：
 #### spring和mybatis整合，原始dao开发
 注意：让接口实现类继承SqlSessionDaoSupport，可以自动加载sqlSessionFactory,通过this.getSqlSession()得到sqlSession
 
-### 2017-10-09总结（多个映射器和多个适配器可以共存）
-1. BeanNameUrlHandlerMapping是非注解处理器映射器，将bean的name作为url进行查找
-2. SimpleUrlHandlerMapping是非注解处理器映射器，是BeanNameUrlHandlerMapping映射器的加强版，它可以将url和处理器bean的id进行统一映射配置
+### 2017-10-09总结
+#### 多个映射器和多个适配器可以共存，如果映射的url在非注解和注解映射器都存在的话，则优先访问url顺序靠前的
+#### 非注解处理器映射器和处理器适配器：
+#### 前端控制器从spring-webmvc-3.2.0.RELEASE.jar里的org.springframework.web.servlet里的DispatcherServlet.properties文件中加载处理器映射器、适配器、视图解析器等组件，如果不在springmvc.xml中配置,使用默认加载的
+1. BeanNameUrlHandlerMapping是简单处理器映射器，将bean的name作为url进行查找
+2. SimpleUrlHandlerMapping是BeanNameUrlHandlerMapping映射器的加强版，它可以将url和处理器bean的id进行统一映射配置
 3. SimpleControllerHandlerAdapter是非注解处理器适配器，要求编写的Handler实现Controller接口
 4. HttpRequestHandlerAdapte是非注解处理器适配器，要求编写的 Handler实现HttpRequestHandler接口，可以使用里面的request参数，设置响应的数据格式，比如响应json格式，这是Controller做不到的
+
+#### 注解处理器映射器和处理器适配器：
+#### 如果使用的映射器是注解的话，则适配器也得使用注解的方式开发，它们必须配对使用
+#### 如果使用<context:component-scan标签批量加载Handler的时候，springmvc的jar包或者jdk版本过低的话，则会报500错误，解决办法为把springmvc的的jar包替换为4.0版本以上的或者把jdk降到1.7
+1. 在spring3.1之前使用org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping注解映射器
+2. 在spring3.1之后使用org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping注解映射器
+3. 在spring3.1之前使用org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter注解适配器      
+4. 在spring3.1之后使用org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter注解适配器
