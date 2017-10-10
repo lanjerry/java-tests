@@ -74,3 +74,33 @@ collection：
 2. 在spring3.1之后使用org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping注解映射器
 3. 在spring3.1之前使用org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter注解适配器      
 4. 在spring3.1之后使用org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter注解适配器
+
+### 2017-10-10总结
+#### ssm配置文件的目录
+config源代码文件夹里面有：
+1. mybatis文件夹：sqlMapConfig.xml
+
+2. spring文件夹</br>
+①.applicationContext-dao.xml</br>
+②.applicationContext-service.xml</br>
+③.applicationContext-transaction.xml</br>
+④.springmvc.xml</br>
+
+3. db.properties（数据库配置文件）
+4. log4j.properties（日志配置文件）
+5. web.xml
+
+#### ssm配置文件的引用
+web.xml：
+1. 加载spring容器，使用org.springframework.web.context.ContextLoaderListener下载spring目录下applicationContext开头的xml文件，即是加载applicationContext-dao.xml、applicationContext-service.xml、applicationContext-transaction.xml</br>
+语法为：赋值contextConfigLocation属性的值为classpath:spring/applicationContext-*.xml
+2. 配置springmvc前端控制器，加载的配置文件（配置处理器映射器，处理器适配器等等） 如果不配置contextConfigLocation，默认加载的是/WEB_INF/servlet名称-servlet.xml(springmvc-servlet.xml)</br>
+语法为：赋值contextConfigLocation属性的值为classpath:spring/springmvc.xml</br>
+
+applicationContext-dao.xml：
+1. 加载mybatis的sqlMapConfig.xml文件，配置sqlSessionFactory时引入</br>
+语法为：赋值configLocation属性的值为classpath:mybatis/sqlMapConfig.xml
+2. 加载db.properties，在配置数据源时需要用到，语法为：context:property-placeholder location="classpath:db.properties"</br>
+
+log4j.properties在log4j的jar包会自动引入
+
