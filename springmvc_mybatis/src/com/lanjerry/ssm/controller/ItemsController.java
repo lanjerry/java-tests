@@ -31,6 +31,8 @@ public class ItemsController {
 		
 		//测试forward后request是否可以共享
 		System.out.println(request.getParameter("id"));
+		
+		System.out.println(request.getParameter("testname"));
 
 		List<ItemsCustom> itemsList = itemsService.findItemsList(null);
 
