@@ -116,7 +116,9 @@ forward为转发页面：浏览器地址栏url不变，request可以共享
 2. HttpServletResponse
 3. HttpSession
 4. Model/ModelMap(model是一个接口,modelMap是一个接口实现，就算定义一个model，最终也会被转成modelMap)
+
 简单类型：通过@RequestParam对简单类型的参数进行绑定</br>
 1. 如果不使用@RequestParam，要求request传入参数名称和controller方法的形参名称一致，方可绑定成功。
 2. 如果使用@RequestParam，不用限制request传入参数名称和controller方法的形参名称一致。
+
 pojo类型：页面中input的name和controller的pojo形参中的属性名称一致，将页面中数据绑定到pojo。
