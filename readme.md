@@ -107,5 +107,5 @@ log4j.properties在log4j的jar包会自动引入
 ### 2017-10-11总结
 #### redirect和forward的区别
 #### 两者都是可以跳转到指定页面
-redirect为重定向页面：浏览器地址栏中的url会变化。修改提交的request数据无法传到重定向的地址。因为重定向后重新进行request（request无法共享）
+redirect为重定向页面：浏览器地址栏中的url会变化。修改提交的request数据无法传到重定向的地址。因为重定向后重新进行request（request无法共享）</br>
 forward为转发页面：浏览器地址栏url不变，request可以共享
