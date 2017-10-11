@@ -109,3 +109,14 @@ log4j.properties在log4j的jar包会自动引入
 #### 两者都是可以跳转到指定页面
 redirect为重定向页面：浏览器地址栏中的url会变化。修改提交的request数据无法传到重定向的地址。因为重定向后重新进行request（request无法共享）</br>
 forward为转发页面：浏览器地址栏url不变，request可以共享
+
+#### 参数绑定
+默认绑定类型：直接在controller方法形参上定义下边类型的对象，就可以使用这些对象。在参数绑定过程中，如果遇到下边类型直接进行绑定</br>
+1. HttpServletRequest
+2. HttpServletResponse
+3. HttpSession
+4. Model/ModelMap(model是一个接口,modelMap是一个接口实现，就算定义一个model，最终也会被转成modelMap)
+简单类型：通过@RequestParam对简单类型的参数进行绑定</br>
+1. 如果不使用@RequestParam，要求request传入参数名称和controller方法的形参名称一致，方可绑定成功。
+2. 如果使用@RequestParam，不用限制request传入参数名称和controller方法的形参名称一致。
+pojo类型：页面中input的name和controller的pojo形参中的属性名称一致，将页面中数据绑定到pojo。
