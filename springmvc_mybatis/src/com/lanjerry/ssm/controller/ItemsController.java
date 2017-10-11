@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lanjerry.ssm.po.ItemsCustom;
+import com.lanjerry.ssm.po.ItemsQueryVo;
 import com.lanjerry.ssm.service.ItemsService;
 
 @Controller
@@ -28,14 +29,14 @@ public class ItemsController {
 	// 商品查询列表
 	// @RequestMapping实现映射器的映射url地址，一般建议讲url和方法名写成一样
 	@RequestMapping("/queryItems")
-	public ModelAndView queryItems(HttpServletRequest request) throws Exception {
+	public ModelAndView queryItems(HttpServletRequest request,ItemsQueryVo itemsQueryVo) throws Exception {
 		
 		//测试forward后request是否可以共享
-		System.out.println(request.getParameter("id"));
+		//System.out.println(request.getParameter("id"));
 		
-		System.out.println(request.getParameter("testname"));
+		//System.out.println(request.getParameter("testname"));
 
-		List<ItemsCustom> itemsList = itemsService.findItemsList(null);
+		List<ItemsCustom> itemsList = itemsService.findItemsList(itemsQueryVo);
 
 		ModelAndView modelAndView = new ModelAndView();
 

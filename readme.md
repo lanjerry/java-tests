@@ -111,6 +111,10 @@ redirect为重定向页面：浏览器地址栏中的url会变化。修改提交
 forward为转发页面：浏览器地址栏url不变，request可以共享
 
 #### 参数绑定
+#### 注意：
+#### 当形参中既有pojo类型又有简单类型相同的名称时，参数绑定互不影响。
+#### 自定义的参数绑定可以通过定义Converter<源类型,目标类型>接口实现类，比如Converter<String,Date>表示：将请求的日期数据串转成java中的日期类型，要转换的目标类型必须和要接收的pojo中的属性类型一致。
+
 默认绑定类型：直接在controller方法形参上定义下边类型的对象，就可以使用这些对象。在参数绑定过程中，如果遇到下边类型直接进行绑定</br>
 1. HttpServletRequest
 2. HttpServletResponse
