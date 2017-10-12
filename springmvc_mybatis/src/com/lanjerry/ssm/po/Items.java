@@ -2,15 +2,24 @@ package com.lanjerry.ssm.po;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.lanjerry.ssm.controller.validation.ValidGroup1;
+
 public class Items {
     private Integer id;
 
+    //校验名称在1到30之间
+    @Size(min=1,max=30,message="{item.name.length.error}",groups= {ValidGroup1.class})
     private String name;
 
     private Float price;
 
     private String pic;
 
+    //非空校验
+    @NotNull(message="{item.createtime.isNUll}")
     private Date createtime;
 
     private String detail;

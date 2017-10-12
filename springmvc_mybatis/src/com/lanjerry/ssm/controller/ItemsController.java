@@ -8,11 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lanjerry.ssm.controller.validation.ValidGroup1;
 import com.lanjerry.ssm.po.ItemsCustom;
 import com.lanjerry.ssm.po.ItemsQueryVo;
 import com.lanjerry.ssm.service.ItemsService;
@@ -81,16 +86,34 @@ public class ItemsController {
 
 		//通过形参中的model将model数据传到页面
 		//相当于modelAndView.addObject方法
-		model.addAttribute("itemsCustom", itemsCustom);
+		model.addAttribute("items", itemsCustom);
 
 
 		return "items/editItems";
 	}
 
 	// 商品信息修改提交
+	//在需要校验的pojo前边添加@Validated，在需要校验的pojo后边添加BindingResult bindingResult接收校验出错信息
+	//注意：@Validated和BindingResult bindingResult是配对出现,并且形参顺序是固定的（一前一后）
+	//@Validated(value= {ValidGroup1.class})指定使用ValidGroup1分组的校验
+	//@ModelAttribute("items") 可以指定pojo回显到页面在 request中的key,相当于“model.addAttribute("items", itemsCustom);”
 	@RequestMapping("/editItemsSubmit")
-	public String editItemsSubmit(HttpServletRequest request,Integer id,ItemsCustom itemsCustom) throws Exception {
+	public String editItemsSubmit(Model model,HttpServletRequest request,Integer id,
+			@ModelAttribute("items") @Validated(value= {ValidGroup1.class}) ItemsCustom itemsCustom,BindingResult bindingResult) throws Exception {
 
+		//获取校验信息
+		if(bindingResult.hasErrors()) {
+			
+			List<ObjectError> allErrors= bindingResult.getAllErrors();
+			for (ObjectError objectError : allErrors) {
+				System.out.println(objectError.getDefaultMessage());
+			}
+			model.addAttribute("allErrors", allErrors);
+			
+			//出错重新到商品修改页面
+			return "items/editItems";
+		}
+		
 		// 调用service更新商品信息,页面需要将商品信息传到此方法
 		 itemsService.updateItems(id, itemsCustom);
 
@@ -99,6 +122,39 @@ public class ItemsController {
 		
 		//页面转发
 		//return "forward:queryItems.action";
+		return "success";
+	}
+	
+	//商品批量删除
+	@RequestMapping("/deleteItems")
+	public String deleteItems(Integer[] items_id)throws Exception {
+		
+		//调应service批量删除商品
+		
+		return "success";
+	}
+	
+	@RequestMapping("/editItemsQuery")
+	public ModelAndView editItemsQuery(HttpServletRequest request,ItemsQueryVo itemsQueryVo) throws Exception {
+
+		List<ItemsCustom> itemsList = itemsService.findItemsList(itemsQueryVo);
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		// 相当于request的setAttribut，在jsp页面中通过itemsList取数据
+		modelAndView.addObject("itemsList", itemsList);
+
+		// 指定视图
+		modelAndView.setViewName("items/editItemsQuery");
+
+		return modelAndView;
+	}
+	
+	@RequestMapping("/editItemsAllSubmit")
+	public String editItemsAllSubmit(ItemsQueryVo temsQueryVo)throws Exception {
+		
+		//调应service批量修改商品
+		
 		return "success";
 	}
 }

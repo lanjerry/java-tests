@@ -1,5 +1,7 @@
 package com.lanjerry.ssm.po;
 
+import java.util.List;
+
 public class ItemsQueryVo {
 	
 	//商品信息
@@ -7,6 +9,16 @@ public class ItemsQueryVo {
 	
 	//为了系统可拓展性，对原始生成的po进行拓展
 	private ItemsCustom itemsCustom;
+	
+	private List<ItemsCustom> itemsList;
+
+	public List<ItemsCustom> getItemsList() {
+		return itemsList;
+	}
+
+	public void setItemsList(List<ItemsCustom> itemsList) {
+		this.itemsList = itemsList;
+	}
 
 	public Items getItems() {
 		return items;
