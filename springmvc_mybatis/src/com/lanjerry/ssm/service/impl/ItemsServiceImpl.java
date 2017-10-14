@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lanjerry.ssm.exception.CustomException;
 import com.lanjerry.ssm.mapper.ItemsCustomMapper;
 import com.lanjerry.ssm.mapper.ItemsMapper;
 import com.lanjerry.ssm.po.Items;
@@ -29,11 +30,20 @@ public class ItemsServiceImpl implements ItemsService {
 	public ItemsCustom findItemsById(Integer id) throws Exception {
 
 		Items items = itemsMapper.selectByPrimaryKey(id);
+		if(items==null) {
+			throw new CustomException("修改的商品信息不存在！");
+		}
 		// 中间对商品信息进行业务处理
 		// ....
-		ItemsCustom itemsCustom = new ItemsCustom();
-		// 将items的属性值拷贝到itemsCustom
-		BeanUtils.copyProperties(items, itemsCustom);
+
+		// 返回ItemsCusto
+		ItemsCustom itemsCustom = null;
+		if (items != null) {
+			itemsCustom = new ItemsCustom();
+			// 将items的属性值拷贝到itemsCustom
+			BeanUtils.copyProperties(items, itemsCustom);
+		}
+
 		return itemsCustom;
 	}
 

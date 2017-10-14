@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lanjerry.ssm.controller.validation.ValidGroup1;
+import com.lanjerry.ssm.exception.CustomException;
 import com.lanjerry.ssm.po.ItemsCustom;
 import com.lanjerry.ssm.po.ItemsQueryVo;
 import com.lanjerry.ssm.service.ItemsService;
@@ -83,6 +84,11 @@ public class ItemsController {
 
 		// 调用service根据商品id查询商品信息
 		ItemsCustom itemsCustom = itemsService.findItemsById(items_id);
+		
+		//判断商品是否为空,根据id没有查询到商品，抛出异常，提示用户商品信息不存在
+/*		if(itemsCustom==null) {
+			throw new CustomException("修改的商品信息不存在");
+		}*/
 
 		//通过形参中的model将model数据传到页面
 		//相当于modelAndView.addObject方法

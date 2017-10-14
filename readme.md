@@ -126,3 +126,13 @@ forward为转发页面：浏览器地址栏url不变，request可以共享
 2. 如果使用@RequestParam，不用限制request传入参数名称和controller方法的形参名称一致。
 
 pojo类型：页面中input的name和controller的pojo形参中的属性名称一致，将页面中数据绑定到pojo。
+
+### 2017-10-14总结
+#### springmvc异常处理
+思路：系统遇到异常，在程序中手动抛出，dao抛给service、service给controller、controller抛给前端控制器，前端控制器调用全局异常处理器。</br>
+全局异常处理器处理思路：解析出异常类型，如果该 异常类型是系统 自定义的异常，直接取出异常信息，在错误页面展示。如果该 异常类型不是系统 自定义的异常，构造一个自定义的异常类型（信息为“未知错误”）</br>
+自定义的异常处理类，需要实现HandlerExceptionResolver接口，还需要在springmvc.xml配置，例如<bean class="com.lanjerry.ssm.exception.CustomExceptionResolver"></bean></br>
+
+#### 注意：
+1. 如果与业务功能相关的异常，建议在service中抛出异常。
+2. 与业务功能没有关系的异常，建议在controller中抛出。
