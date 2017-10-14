@@ -15,6 +15,12 @@
 
 	<!-- 批量加载Handler（注解映射调用，实际开发中使用） -->
 	<context:component-scan base-package="com.lanjerry.ssm.controller"></context:component-scan>
+	
+		<!-- 静态资源解析
+	包括 ：js、css、img、..
+	 -->
+	 <mvc:resources location="/js/" mapping="/js/**"/>
+	 <mvc:resources location="/img/" mapping="/img/**"/>
 
 	<!-- 使用mvc:annotation-driven代替上面的注解映射器和注解适配器配置（实际开发中使用） -->
 	<!-- mvc:annotation-driven默认加载很多的参数绑定方法，比如json转换解析器就默认加载了，如果使用mvc:annotation-driven不用配置上边的RequestMappingHandlerMapping和RequestMappingHandlerAdapter -->
