@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -133,13 +134,13 @@ public class ItemsController {
 
 			// 新的图片名称
 			String newFileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
-			//新的图片
-			File newFile=new java.io.File(pic_path+newFileName);
-			
-			//将内存中的数据写入磁盘
+			// 新的图片
+			File newFile = new java.io.File(pic_path + newFileName);
+
+			// 将内存中的数据写入磁盘
 			items_pic.transferTo(newFile);
-			
-			//上传成功，要将新的图片名称写到itemsCustom
+
+			// 上传成功，要将新的图片名称写到itemsCustom
 			itemsCustom.setPic(newFileName);
 		}
 
